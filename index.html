@@ -15,10 +15,17 @@
   (() => {
 
     class Counter extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          count: 10
+        };
+      }
+
       render() {
         return (
           <li style={{backgroundColor:this.props.color}}>
-            0
+            {this.state.count}
           </li>
         );
       }
