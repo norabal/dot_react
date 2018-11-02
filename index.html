@@ -1,70 +1,76 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>React Practice</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <!-- Don't use this in production: -->
-    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <meta charset="UTF-8">
+  <title>React Practice</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-  (() => {
+  <div id="root"></div>
+  <script type="text/babel">
+    (() => {
 
-    function Counter(props) {
-      return (
-        <li style={{backgroundColor: props.counter.color}}>
-          {props.counter.id}:{props.counter.count}
-        </li>
-      );
-    }
-
-    function CounterList(props) {
-      const counters = props.counters.map(counter => {
+      function Counter(props) {
         return (
-          <Counter
-            counter={counter}
-            key={counter.id}
-          />
+          <li style={{backgroundColor:props.counter.color}} onClick={() => props.countUp(props.counter)}>
+            {props.counter.id}:{props.counter.count}
+          </li>
         );
-      });
-      return (
-        <ul>
-          {counters}
-        </ul>
-      );
-    }
-
-    class App extends React.Component {
-      constructor() {
-        super();
-        this.state = {
-          counters: [
-            {id: 'A', count: 0, color: 'tomato'},
-            {id: 'B', count: 0, color: 'skyblue'},
-            {id: 'C', count: 0, color: 'limegreen'}
-          ]
-        };
       }
 
-      render() {
+      function CounterList(props) {
+        const counters = props.counters.map(counter => {
+          return (
+            <Counter
+              counter={counter}
+              key={counter.id}
+              countUp={props.countUp}
+            />
+          );
+        });
         return (
-          <div className="container">
-              <CounterList counters={this.state.counters}/>
+          <ul>
+            {counters}
+          </ul>
+        );
+      }
+
+      class App extends React.Component {
+        constructor() {
+          super();
+          this.state = {
+            counters: [
+              {id: 'A', count: 0, color: 'tomato'},
+              {id: 'B', count: 0, color: 'skyblue'},
+              {id: 'C', count: 0, color: 'limegreen'}
+            ]
+          };
+          this.countUp = this.countUp.bind(this);
+        }
+        countUp(counter) {
+
+        }
+        render() {
+          return (
+            <div className="container">
+              <CounterList
+                counters={this.state.counters}
+                countUp={this.countUp}
+              />
               <div>TOTAL INVENTORY: 3</div>
-          </div>
-        );
+            </div>
+          );
+        }
       }
-    }
 
-    ReactDOM.render(
-      <App/>,
-      document.getElementById('root')
-    );
-  })();
-</script>
+      ReactDOM.render(
+        <App/>,
+        document.getElementById('root')
+      );
+    })();
+  </script>
 </body>
 </html>
